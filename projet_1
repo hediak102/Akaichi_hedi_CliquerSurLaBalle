@@ -61,6 +61,59 @@
         msg.classList.add("message");      
         document.querySelector(".score-display").after(msg);  
       }
+      //function that if u click on the start button the game starts and the time start running out
+      //and u get a ball game thats the new button that u click on to play 
+      function switchBoutton(){
+        const name =document.getElementById("label");
+        if(name.value===""){
+          alert("please enter your name before starting ")
+          return;
+          }
+          document.getElementById("startBtn").remove();
+          document.getElementById("label").remove();
+          
+          //creating the players name input; 
+
+          NAME=name.value.toUpperCase();
+          const displayName=document.createElement("p");
+          displayName.textContent="playersName : "+ NAME ;
+          displayName.classList.add("PlayersName");
+          document.querySelector(".score-display").after(displayName);
+
+          //creating the ballgame btn;
+
+          const BallGame = document.createElement('button');
+          BallGame.textContent="🏀";
+          BallGame.classList.add("game");
+
+          //creating the restart btn;
+
+          const restart = document.createElement('button');
+          restart.textContent="restart";
+          restart.classList.add("restar");
+
+          //timer display ;
+
+          const timerDisplay = document.createElement("p");
+          timerDisplay.classList.add("timer");
+          timerDisplay.textContent = "Time left: 10s";
+          document.querySelector(".score-display").after(timerDisplay);
+
+          //ball game button ;
+
+          BallGame.onclick= function(){
+            if(gameOver){return;}  
+            const scoreDisplay = document.querySelector(".score-display");
+            score++;
+            scoreDisplay.textContent = "Score: " + score;
+
+            const x = Math.random() * (window.innerWidth - BallGame.offsetWidth);
+            const y = Math.random() * (window.innerHeight - BallGame.offsetHeight);
+            BallGame.style.left = `${x}px`;
+            BallGame.style.top = `${y}px`;
+            StartTimer();
+          }
+        }
     </script>
 </body>
 </html>
