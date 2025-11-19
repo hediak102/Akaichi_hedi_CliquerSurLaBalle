@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
     <title>Document</title>
 </head>
 <body>
@@ -24,5 +24,43 @@
         <br><br>
         <input type="text" placeholder="Player's Name">
     </div>
+    <script>
+      let score=0;
+      let timer=0;
+      let timeleft=5;
+      let gameOver=false;
+      let msg;
+      
+      //to start the timer :
+
+      function StartTimer(){
+      const timerDisplay= document.querySelector(".timer");
+      clearInterval(timer);
+
+      timeleft=5;
+      timerDisplay.textContent="Time-left:" + timeleft +"s";
+      timer=setInterval(()=>{
+        timeleft--;
+        timerDisplay.textContent="Time-left:" + timeleft +"s";
+        if(timeleft<=0){
+          clearInterval(timer);
+          GameOver();
+        }
+      },300);
+      } 
+      
+      //if the timer rans out you lose the game 
+
+      function GameOver(){
+        gameOver=true;
+        alert("tick tick tick your time run off try again ");
+        const ball = document.querySelector(".game");
+        if (ball) {ball.remove()};
+        msg=document.createElement("p");
+        msg.textContent="GAME OVER !";
+        msg.classList.add("message");      
+        document.querySelector(".score-display").after(msg);  
+      }
+    </script>
 </body>
 </html>
