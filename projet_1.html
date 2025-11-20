@@ -6,23 +6,132 @@
     <title>Document</title>
 </head>
 <body>
-    <div>🏀</div>
-    <div>🏀</div>
-    <div>🏀</div>
-    <div>🏀</div>
-    <div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+  <style>
+    .PlayersName{
+      position:fixed;
+      top: 15px ;
+      right: 90px;
+      font-size: 20px;
+      padding: 20px;
+      color: #ff6b35;
+      font-weight: bold;
+      margin: 20px 0;
+      text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+      box-shadow: 0 8px 0 #000, 0 15px 30px rgba(247, 147, 30, 0.4);
+      border-radius: 15px;  
+      border: 4px solid #000;
+      display: inline-block;
+      overflow: hidden;
+      background:linear-gradient(90deg, transparent 0%, #000000 50%, transparent 100%);
+
+    }
+    .game{
+        background: transparent;  /* no white background */
+        border: none;             /* remove border */
+        cursor: pointer;          /* optional: pointer on hover */
+        position: fixed;
+        font-size: 80px;
+        animation: float 3s infinite ease-in-out;
+        opacity: 1;
+        z-index: 0;
+    }
+    .restar{
+      background: linear-gradient(90deg, transparent 0%, #000000 50%, transparent 100%);
+      position:fixed;
+      bottom: 20px;
+      left:565px;
+      font-size: 20px;
+      padding: 5px;
+      font-weight: bold;
+      color: #ff6b35;
+      margin: 20px 0;
+      padding: 20px 15px;
+      font-weight: 900;
+      overflow: hidden;
+      border: 4px solid #000;
+      border-radius: 50%;
+      box-shadow: 0 8px 0 #000, 0 15px 30px rgba(247, 147, 30, 0.4);
+    }
+    .restar::after {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: -100%;  /* Commence caché à gauche */
+     width: 100%;
+     height: 100%;
+     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+     transition: left 0.6s;
+    }
+
+   .restar:hover::after {
+    left: 100%;  /* Glisse vers la droite au hover */
+    }
+    .timer{
+      position: fixed;
+      top:15px;
+      left: 170px;
+      color: #ff6b35; 
+      font-weight: bold;
+      margin: 20px 0;
+      text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+      overflow: hidden;
+      border: 4px solid #000;
+      border-radius: 15px;
+      box-shadow: 0 8px 0 #000, 0 15px 30px rgba(247, 147, 30, 0.4);
+      background: linear-gradient(90deg, transparent 0%, #000000 50%, transparent 100%);
+      padding: 20px;
+    }
+    .message {
+      position: fixed;
+      top: 240px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: "Press Start 2P", cursive;
+      font-size: 50px;
+      color: #ff6b35;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: glitch 1s infinite;
+   }
+
+   @keyframes glitch {
+     0% { text-shadow: 2px 0 red, -2px 0 blue; }
+     20% { text-shadow: -2px 0 red, 2px 0 blue; }
+     40% { text-shadow: 2px 2px red, -2px -2px blue; }
+     60% { text-shadow: -2px -2px red, 2px 2px blue; }
+     80% { text-shadow: 2px -2px red, -2px 2px blue; }
+     100% { text-shadow: -2px 2px red, 2px -2px blue; }
+  }
+    .fade-out {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease;
+    }     
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>  
+    <div class="floating-ball ball-1">🏀</div>
+    <div class="floating-ball ball-2">🏀</div>
+    <div class="floating-ball ball-3">🏀</div>
+    <div class="floating-ball ball-4">🏀</div>
+    <div class="court-lines">
+        <div class="center-circle"></div>
+        <div class="center-line"></div>
+        <div class="three-point-left"></div>
+        <div class="three-point-right"></div>
     </div>
-    <div></div>
-    <div></div>
-    <div>Score:0</div> 
-    <div> 
-        <button>click to start</button>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="score-display">Score:0</div> 
+    <div class="adjust"> 
+        <button  id="startBtn" class="btn2" onclick="switchBoutton()">click to start</button>
         <br><br>
-        <input type="text" placeholder="Player's Name">
+        <input id="label" type="text" placeholder="Player's Name" class="name" ></input>
     </div>
     <script>
       let score=0;
@@ -47,10 +156,7 @@
           GameOver();
         }
       },300);
-      } 
-      
-      //if the timer rans out you lose the game 
-
+      }
       function GameOver(){
         gameOver=true;
         alert("tick tick tick your time run off try again ");
@@ -61,8 +167,6 @@
         msg.classList.add("message");      
         document.querySelector(".score-display").after(msg);  
       }
-      //function that if u click on the start button the game starts and the time start running out
-      //and u get a ball game thats the new button that u click on to play 
       function switchBoutton(){
         const name =document.getElementById("label");
         if(name.value===""){
@@ -112,8 +216,62 @@
             BallGame.style.left = `${x}px`;
             BallGame.style.top = `${y}px`;
             StartTimer();
-          }
-        }
-    </script>
+          
+          };
+          //the function of the restart btn;
+
+          restart.addEventListener("click", ()=>{
+            const adjustDiv=document.querySelector(".adjust");
+            const scoreDisplay=document.querySelector(".score-display");
+            const playerName=document.querySelector(".PlayersName");
+            const ball=document.querySelector(".game");
+            const restartBtn=document.querySelector(".restar");
+
+            adjustDiv.classList.add("fade-out");
+            scoreDisplay.classList.add("fade-out");
+            if(playerName) {playerName.classList.add("fade-out");}
+            if(ball) {ball.classList.add("fade-out");}
+            if(restartBtn) {restartBtn.classList.add("fade-out");}
+            if(msg){msg.classList.add("fade-out")};
+            timerDisplay.classList.add("fade-out");
+
+            setTimeout(()=>{
+              clearInterval();
+              gameOver=false;
+              score=0;
+              scoreDisplay.textContent="Score: 0";
+
+              if(playerName) {playerName.remove();}
+              if(ball) {ball.remove();}
+              if(restartBtn) {restartBtn.remove();}
+              if(msg) {msg.remove();}
+              timerDisplay.remove();
+
+              adjustDiv.innerHTML = `<button id="startBtn" class="btn2" onclick="switchBoutton()">click to start</button>
+              <br><br> <input id="label" type="text" placeholder="Player's Name" class="name">`;
+              adjustDiv.classList.remove("fade-out");
+              scoreDisplay.classList.remove("fade-out");
+              restartBtn.classList.remove("fade-out");
+              playerName.remove();
+              ball.remove();
+              msg.remove();
+              timerDisplay.remove();
+
+              adjustDiv.classList.add("fade-in");
+              scoreDisplay.classList.add("fade-in");
+
+              setTimeout(() => {
+                adjustDiv.classList.remove("fade-in");
+                scoreDisplay.classList.remove("fade-in");
+              }, 600);
+              clearInterval(timer);
+              StartTimer();
+            },600);
+          } );
+          document.querySelector(".adjust").appendChild(BallGame);
+          StartTimer();
+          document.querySelector(".adjust").appendChild(restart);
+        } 
+    </script>  
 </body>
 </html>
