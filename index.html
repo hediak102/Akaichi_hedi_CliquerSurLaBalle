@@ -7,6 +7,23 @@
 </head>
 <body>
   <style>
+    .high-score {
+        position: fixed;
+        bottom: 20px;
+        left: 90px;
+        font-size: 20px;
+        padding: 20px;
+        color: #ff6b35;
+        font-weight: bold;
+        margin: 20px 0;
+        text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
+        box-shadow: 0 8px 0 #000, 0 15px 30px rgba(255, 235, 59, 0.4);
+        border-radius: 15px;  
+        border: 4px solid #000;
+        display: inline-block;
+        overflow: hidden;
+        background: linear-gradient(90deg, transparent 0%, #000000 50%, transparent 100%);
+    }
     .PlayersName{
       position:fixed;
       top: 15px ;
@@ -114,6 +131,33 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+    @keyframes Glow {
+    0%, 100% {
+        color: #ffeb3b;
+        text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
+        box-shadow: 0 8px 0 #000, 0 15px 30px rgba(255, 235, 59, 0.4);
+    }
+    50% {
+        color: #ffff00;
+        text-shadow: 0 0 20px rgba(255, 235, 59, 1);
+        box-shadow: 0 8px 0 #000, 0 15px 40px rgba(255, 235, 59, 0.8);
+    }
+  }
+  .resetScore{
+      position: fixed;
+      bottom:20px;
+      right: 90px;
+      color: #ff6b35; 
+      font-weight: bold;
+      margin: 20px 0;
+      text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+      overflow: hidden;
+      border: 4px solid #000;
+      border-radius: 15px;
+      box-shadow: 0 8px 0 #000, 0 15px 30px rgba(247, 147, 30, 0.4);
+      background: linear-gradient(90deg, transparent 0%, #000000 50%, transparent 100%);
+      padding: 20px;
+  }
   </style>  
     <div class="floating-ball ball-1">🏀</div>
     <div class="floating-ball ball-2">🏀</div>
@@ -139,6 +183,7 @@
       let timeleft=5;
       let gameOver=false;
       let msg;
+      let highScore=localStorage.getItem('basketballHighScore') || 0;
       
       //to start the timer :
 
@@ -185,6 +230,35 @@
           displayName.textContent="playersName : "+ NAME ;
           displayName.classList.add("PlayersName");
           document.querySelector(".score-display").after(displayName);
+          
+          //creating the display label of the high score
+          
+           const highScoreDisplay = document.createElement("p");
+           highScoreDisplay.textContent = "High Score: " + highScore;
+           highScoreDisplay.classList.add("high-score");
+           document.querySelector(".score-display").after(highScoreDisplay);
+
+           //Creating the reset score button 
+          
+          const resetHScore= document.createElement("button");
+          resetHScore.textContent="RESET-HIGH-SCORE ";
+          resetHScore.classList.add("resetScore");
+          resetHScore.addEventListener("click", () => {
+              if(confirm("Are you sure you want to reset the high score to 0?")) {
+                  highScore = 0;
+                  localStorage.setItem('basketballHighScore', highScore);
+                  highScoreDisplay.textContent = "High Score: " + highScore;
+            
+                  // Effet visuel de confirmation
+                  highScoreDisplay.style.animation = "fadeIn 0.5s";
+                  setTimeout(() => {
+                     highScoreDisplay.style.animation = "";
+                     }, 500);
+               }
+                setTimeout(() => {
+                  restart.click(); 
+                }, 200);
+          });
 
           //creating the ballgame btn;
 
@@ -213,6 +287,15 @@
             score++;
             scoreDisplay.textContent = "Score: " + score;
 
+            //updating high score if needed 
+
+            if(score>highScore){
+              highScore=score;
+              localStorage.setItem('basketballHighScore',highScore);
+              highScoreDisplay.textContent= "High Score: "+ highScore;
+              highScoreDisplay.style.animation = "Glow 1s infinite";
+            }
+
             const x = Math.random() * (window.innerWidth - BallGame.offsetWidth);
             const y = Math.random() * (window.innerHeight - BallGame.offsetHeight);
             BallGame.style.left = `${x}px`;
@@ -229,6 +312,8 @@
             const playerName=document.querySelector(".PlayersName");
             const ball=document.querySelector(".game");
             const restartBtn=document.querySelector(".restar");
+            const highScoreElement = document.querySelector(".high-score");
+            const resetHighScoreBtn = document.querySelector(".resetScore")
 
             adjustDiv.classList.add("fade-out");
             scoreDisplay.classList.add("fade-out");
@@ -237,9 +322,11 @@
             if(restartBtn) {restartBtn.classList.add("fade-out");}
             if(msg){msg.classList.add("fade-out")};
             timerDisplay.classList.add("fade-out");
+            if(highScoreElement) { highScoreElement.classList.add("fade-out"); }
+            if(resetHighScoreBtn) { resetHighScoreBtn.classList.add("fade-out"); }
 
             setTimeout(()=>{
-              clearInterval();
+              clearInterval(timer);
               gameOver=false;
               score=0;
               scoreDisplay.textContent="Score: 0";
@@ -249,6 +336,8 @@
               if(restartBtn) {restartBtn.remove();}
               if(msg) {msg.remove();}
               timerDisplay.remove();
+              if(highScoreElement) { highScoreElement.remove(); }
+              if(resetHighScoreBtn) { resetHighScoreBtn.remove(); }
 
               adjustDiv.innerHTML = `<button id="startBtn" class="btn2" onclick="switchBoutton()">click to start</button>
               <br><br> <input id="label" type="text" placeholder="Player's Name" class="name">`;
@@ -274,6 +363,7 @@
           document.querySelector(".adjust").appendChild(BallGame);
           StartTimer();
           document.querySelector(".adjust").appendChild(restart);
+          document.querySelector(".adjust").appendChild(resetHScore);
         } 
     </script>  
 </body>
