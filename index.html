@@ -146,20 +146,22 @@
       const timerDisplay= document.querySelector(".timer");
       clearInterval(timer);
 
+      gameActive=true; // to prevent unwanted alerts from function gameover
       timeleft=5;
       timerDisplay.textContent="Time-left:" + timeleft +"s";
       timer=setInterval(()=>{
         timeleft--;
         timerDisplay.textContent="Time-left:" + timeleft +"s";
-        if(timeleft<=0){
+        if(timeleft<=0 && gameActive){
           clearInterval(timer);
           GameOver();
+          gameActive=false;
         }
-      },300);
+      },600);
       }
       function GameOver(){
         gameOver=true;
-        alert("tick tick tick your time run off try again ");
+        alert("“Tick… tick… tock… that’s the sound of your time running out. 😈 ”");
         const ball = document.querySelector(".game");
         if (ball) {ball.remove()};
         msg=document.createElement("p");
@@ -221,6 +223,7 @@
           //the function of the restart btn;
 
           restart.addEventListener("click", ()=>{
+            gameActive=false;
             const adjustDiv=document.querySelector(".adjust");
             const scoreDisplay=document.querySelector(".score-display");
             const playerName=document.querySelector(".PlayersName");
