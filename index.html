@@ -180,7 +180,7 @@
     <script>
       let score=0;
       let timer=0;
-      let timeleft=5;
+      let timeleft=3;
       let gameOver=false;
       let msg;
       let highScore=localStorage.getItem('basketballHighScore') || 0;
@@ -192,13 +192,15 @@
       clearInterval(timer);
 
       gameActive=true; // to prevent unwanted alerts from function gameover
-      timeleft=5;
+      timeleft=3;
       timerDisplay.textContent="Time-left:" + timeleft +"s";
       timer=setInterval(()=>{
         timeleft--;
         timerDisplay.textContent="Time-left:" + timeleft +"s";
-        if(timeleft<=0 && gameActive){
+        if(timeleft<0 && gameActive){
           clearInterval(timer);
+          timeleft=0;
+          timerDisplay.textContent="Time-left:" + timeleft +"s";
           GameOver();
           gameActive=false;
         }
