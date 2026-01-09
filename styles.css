@@ -225,10 +225,11 @@ body{
 }
 .score-display {
     position:fixed;
-    font-size: 40px;
-    top:20px;
-    left:520px;
-    padding: 10px;
+    font-size: 20px;
+    top:60px;
+    left:50%;
+    transform: translateX(-50%);
+    padding: 10px 15px;
     color: #ff6b35;
     font-weight: bold;
     margin: 20px 0;
@@ -236,12 +237,27 @@ body{
     overflow: hidden;
     border: 4px solid #000;
     border-radius: 15px;
+    z-index: 1000;
     box-shadow: 0 8px 0 #000, 0 15px 30px rgba(247, 147, 30, 0.4);
     background: linear-gradient(90deg, transparent 0%, #000000 50%, transparent 100%);
 } 
 @media (max-width: 600px) {
-  body {
-    background-color: lightgray;
-    font-size: 16px;
-}
+  .high-score, .PlayersName, .timer, .resetScore {
+        font-size: 106px;
+        padding: 6px 8px;
+    }
+    
+    .score-display {
+        font-size: 20px;
+        top: 55px;
+    }
+    
+    .restar {
+        font-size: 12px;
+        padding: 10px 8px;
+    }
+    .message {
+        font-size: 24px;  
+        padding: 10px;
+    }
 }
